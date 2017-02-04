@@ -2,7 +2,7 @@
 
 const int TcpSocket::NONE = -1;
 
-TcpSocket::TcpSocket(int fd, const std::string& host, uint16_t port, Poller& poller):fd(fd), host(host), port(port), poller(poller) {
+TcpSocket::TcpSocket(int fd, const std::string& host, uint16_t port, Poller& poller): fd(fd), host(host), port(port), poller(poller) {
     try {
         std::string error = "Couldn't make socket (fd " + std::to_string(fd) + ") non-blocking";
         int flags = _m1_system_call(fcntl(fd, F_GETFL, 0), error);

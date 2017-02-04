@@ -12,6 +12,7 @@ class HttpRequest: public HttpMessage {
 public:
     HttpRequest();
     HttpRequest(Http::Method, const std::string&, const std::string&);
+    virtual ~HttpRequest();
 
     Http::Method getMethod() const;
     std::string getMethodAsString() const;

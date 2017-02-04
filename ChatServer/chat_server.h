@@ -19,8 +19,8 @@ public:
     };
 
     class Object {
-        size_t size;
         std::map<std::string, JSON::Type> types;
+        size_t size;
     public:
         Object(const std::map<std::string, JSON::Type>&);
 

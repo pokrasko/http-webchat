@@ -1,8 +1,8 @@
 #include "http_message.h"
 
-HttpMessage::HttpMessage(): isParsed(true), state(START) {}
+HttpMessage::HttpMessage(): state(START), isParsed(true) {}
 
-HttpMessage::HttpMessage(const std::string& version): version(version), isParsed(false), state(START) {}
+HttpMessage::HttpMessage(const std::string& version): state(START), isParsed(false), version(version) {}
 
 void HttpMessage::parseHeader(const std::string& header) {
     if (!isParsed) {

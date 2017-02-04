@@ -77,7 +77,8 @@ void HttpResponse::append(std::string data) {
             }
         }
     } catch (const std::exception& exception) {
-        if (exception.what() == "The message is finished") {
+        if (strcmp(exception.what(), "The message is finished")) {
+//        if (exception.what() == "The message is finished") {
             throw exception;
         } else {
             state = INVALID;

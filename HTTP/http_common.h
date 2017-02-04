@@ -20,7 +20,7 @@ namespace Http {
 
     std::string getUriPath(const std::string&);
     std::map<std::string, std::string> queryParameters(const std::string&);
-};
+}
 
 
 #endif //HTTPWEBCHAT_HTTPCOMMON_H

@@ -8,9 +8,9 @@
 
 class TcpSocket {
 protected:
+    int fd;
     std::string host;
     uint16_t port;
-    int fd;
 
     Poller& poller;
 public:

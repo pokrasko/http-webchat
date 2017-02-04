@@ -48,7 +48,7 @@ void TcpAcceptSocket::accept(const epoll_event& event, AcceptHandler acceptHandl
             throw OwnException("Couldn't get info about incoming connection: " + std::string(gai_strerror(res)));
         }
 
-        sscanf(pbuf, "%" SCNd16, &port);
+        sscanf(pbuf, "%" SCNu16, &port);
     } catch (const std::exception& exception) {
         ::close(incomingFD);
         throw exception;

@@ -32,7 +32,7 @@ void TcpServerSocket::eventHandler(const epoll_event& event) {
                 inBuffer.insert(inBuffer.end(), buf, buf + readCount);
             }
 
-            if (readCount == 0 || readCount == -1 && errno != EAGAIN && errno != EWOULDBLOCK) {
+            if (readCount == 0 || (readCount == -1 && errno != EAGAIN && errno != EWOULDBLOCK)) {
                 close();
                 return;
             } else if (received && receivedDataHandler) {

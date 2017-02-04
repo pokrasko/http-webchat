@@ -5,6 +5,8 @@ HttpRequest::HttpRequest(): HttpMessage() {}
 HttpRequest::HttpRequest(Http::Method method, const std::string& uri, const std::string& version):
         HttpMessage(version), method(method), uri(uri) {}
 
+HttpRequest::~HttpRequest() {}
+
 bool HttpRequest::shouldHaveBody() const {
     return (isParsed && (getHeader("Content-Length") != "" || getHeader("Transfer-Encoding") != ""))
            || (!isParsed && method == Http::Method::POST);
@@ -71,7 +73,8 @@ void HttpRequest::append(std::string data) {
             }
         }
     } catch (const std::exception& exception) {
-        if (exception.what() == "The message is finished") {
+        if (strcmp(exception.what(), "The message is finished")) {
+//        if (exception.what() == "The message is finished") {
             throw exception;
         } else {
             state = INVALID;

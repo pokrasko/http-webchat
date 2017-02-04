@@ -294,7 +294,7 @@ ChatServer::ChatServer(uint16_t port, Poller& poller): httpServer(HttpServer(por
                     }
 
                     try {
-                        Resource resource = Resource::getResource(filename);
+                        Resource::getResource(filename);
                     } catch (const std::out_of_range& out_of_range) {
                         logError(request, 404, "Not found: " + filename);
                         HttpResponse response(request.getMethod(), Http::VERSION1_1, 404, "Not Found");
