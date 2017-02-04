@@ -52,7 +52,8 @@ foreach(RESOURCE_FILE IN LISTS RESOURCE_FILES)
     string(CONCAT OUTPUT_FILENAME ${NAME} ".o")
     add_custom_command(OUTPUT ${OUTPUT_FILENAME}
             COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/Resources
-                && ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILENAME} ${FILENAME})
+                && ld -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILENAME} ${FILENAME}
+            MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/Resources/${FILENAME})
     list(APPEND BINARY_RESOURCES ${OUTPUT_FILENAME})
 endforeach()
 
