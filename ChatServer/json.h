@@ -13,12 +13,15 @@ public:
 private:
     Type type;
 
-    bool booleanValue;
-    long integerValue;
-    double doubleValue;
-    std::string stringValue;
-    std::vector<JSON> arrayValue;
-    std::map<std::string, JSON> objectValue;
+    union
+    {
+        bool booleanValue;
+        long integerValue;
+        double doubleValue;
+        std::string stringValue;
+        std::vector<JSON> arrayValue;
+        std::map<std::string, JSON> objectValue;
+    };
 
     static JSON readNumber(const std::string&, size_t&, bool);
     static JSON _parseJSON(const std::string&, size_t&);
@@ -30,6 +33,10 @@ public:
     JSON(const std::string&);
     JSON(const std::vector<JSON>&);
     JSON(const std::map<std::string, JSON>&);
+    ~JSON();
+
+    JSON(JSON const&);
+    JSON& operator=(const JSON& rhs);
 
     Type getType() const;
     bool getBooleanValue() const;
@@ -38,6 +45,8 @@ public:
     std::string getStringValue() const;
     std::vector<JSON> getArrayValue() const;
     std::map<std::string, JSON> getObjectValue() const;
+
+    void clear();
 
     static JSON parseJSON(const std::string&);
     std::string toString() const;

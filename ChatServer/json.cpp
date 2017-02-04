@@ -2,17 +2,86 @@
 
 JSON::JSON(): type(NULL_VALUE) {}
 
-JSON::JSON(bool booleanValue): type(BOOLEAN), booleanValue(booleanValue) {}
+JSON::JSON(bool booleanValue)
+    : type(BOOLEAN)
+{
+    new (&this->booleanValue) bool(booleanValue);
+}
 
-JSON::JSON(long integerValue): type(INTEGER), integerValue(integerValue) {}
+JSON::JSON(long integerValue)
+    : type(INTEGER)
+{
+    new (&this->integerValue) long(integerValue);
+}
 
-JSON::JSON(double doubleValue): type(DOUBLE), doubleValue(doubleValue) {}
+JSON::JSON(double doubleValue)
+    : type(DOUBLE)
+{
+    new (&this->doubleValue) double(doubleValue);
+}
 
-JSON::JSON(const std::string& stringValue): type(STRING), stringValue(stringValue) {}
+JSON::JSON(const std::string& stringValue)
+    : type(STRING)
+{
+    new (&this->stringValue) std::string(stringValue);
+}
 
-JSON::JSON(const std::vector<JSON>& arrayElements): type(ARRAY), arrayValue(arrayElements) {}
+JSON::JSON(const std::vector<JSON>& arrayElements)
+    : type(ARRAY)
+{
+    new (&this->arrayValue) std::vector<JSON>(arrayElements);
+}
 
-JSON::JSON(const std::map<std::string, JSON>& objectFields): type(OBJECT), objectValue(objectFields) {}
+JSON::JSON(const std::map<std::string, JSON>& objectFields)
+    : type(OBJECT)
+{
+    new (&this->objectValue) std::map<std::string, JSON>(objectFields);
+}
+
+JSON::~JSON()
+{
+    clear();
+}
+
+JSON::JSON(const JSON& rhs)
+    : JSON()
+{
+    *this = rhs;
+}
+
+JSON& JSON::operator=(const JSON& rhs)
+{
+    if (this == &rhs)
+        return *this;
+
+    clear();
+    switch (rhs.type)
+    {
+    case JSON::NULL_VALUE:
+        break;
+    case JSON::BOOLEAN:
+        new (&this->booleanValue) bool(rhs.booleanValue);
+        break;
+    case JSON::INTEGER:
+        new (&this->integerValue) long(rhs.integerValue);
+        break;
+    case JSON::DOUBLE:
+        new (&this->doubleValue) double(rhs.doubleValue);
+        break;
+    case JSON::STRING:
+        new (&this->stringValue) std::string(rhs.stringValue);
+        break;
+    case JSON::ARRAY:
+        new (&this->arrayValue) std::vector<JSON>(rhs.arrayValue);
+        break;
+    case JSON::OBJECT:
+        new (&this->objectValue) std::map<std::string, JSON>(rhs.objectValue);
+        break;
+    }
+    type = rhs.type;
+
+    return *this;
+}
 
 JSON JSON::readNumber(const std::string& data, size_t& cur, bool isNegative) {
     std::string numberAsString = (isNegative ? "-" : "");
@@ -266,6 +335,29 @@ std::map<std::string, JSON> JSON::getObjectValue() const {
         throw OwnException("Taking boolean value from JSON type " + type);
     }
     return objectValue;
+}
+
+void JSON::clear()
+{
+    switch (type)
+    {
+    case JSON::NULL_VALUE:
+    case JSON::BOOLEAN:
+    case JSON::INTEGER:
+    case JSON::DOUBLE:
+        break;
+    case JSON::STRING:
+        this->stringValue.~basic_string();
+        break;
+    case JSON::ARRAY:
+        this->arrayValue.~vector();
+        break;
+    case JSON::OBJECT:
+        this->objectValue.~map();
+        break;
+    }
+
+    type = JSON::NULL_VALUE;
 }
 
 JSON JSON::parseJSON(const std::string& data) {
