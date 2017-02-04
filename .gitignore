@@ -2,6 +2,7 @@
 *.o
 HttpWebChat
 Makefile
+cmake-build-debug
 .idea/.name
 .idea/compiler.xml
 .idea/copyright
